@@ -4,7 +4,7 @@ export function onRequest(context) {
       "\u0005D\u0019A\u0011F": "D\u0000H"
   };
 
-  return new Response(JSON.stringify(jsonResponse), {
+  return new Response(JSON.stringify(context), {
     status: 200,
     headers: {
       "content-type": "application/json"
