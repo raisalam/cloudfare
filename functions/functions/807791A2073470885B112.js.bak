@@ -1,7 +1,7 @@
 export function onRequest(context) {
   const jsonResponse = {
     status: 200,
-    message: "Login success"
+    message: "Hello, world! my function"
   };
 
   return new Response(JSON.stringify(jsonResponse), {
