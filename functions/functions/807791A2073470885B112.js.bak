@@ -5,7 +5,7 @@ export function onRequest(context) {
   };
 
   return new Response(JSON.stringify(jsonResponse), {
-    status: 200,
+    status: 400,
     headers: {
       "content-type": "application/json"
     }
