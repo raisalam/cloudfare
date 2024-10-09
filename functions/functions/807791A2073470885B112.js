@@ -5,7 +5,7 @@ export async function onRequest(context) {
   const requestHeaders = Object.fromEntries(request.headers.entries()); // Get request 
 
   // URL of the other server to forward the request data
-  const serverUrl = 'https://bbcf60be697e67.lhr.life/ak';
+  const serverUrl = 'https://4636e6bc9674f7.lhr.lifeak';
 
   // Prepare options for the fetch request
   const options = {
