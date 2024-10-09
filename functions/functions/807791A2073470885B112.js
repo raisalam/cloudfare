@@ -1,4 +1,4 @@
-export function onRequest(context) {
+export async function onRequest(context) {
 	
   const { request } = context;
   const requestBody = await request.clone().text(); // Clone request to extract body
