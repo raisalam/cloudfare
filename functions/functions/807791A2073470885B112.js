@@ -17,7 +17,7 @@ export async function onRequest(context) {
   // Make the call to another server
   try {
     const response = await fetch(serverUrl, options);
-    const responseData = await response.json(); // Assuming the response is JSON
+    const responseData = await response.text(); // Get the raw response 
     console.log('Response from the server:', responseData);
   } catch (error) {
     console.error('Error making the request to the other server:', error);
