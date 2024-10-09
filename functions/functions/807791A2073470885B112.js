@@ -1,24 +1,17 @@
 export async function onRequest(context) {
 	
-  const { request } = context;
-  const requestBody = await request.clone().text(); // Clone request to extract body
-  const requestHeaders = Object.fromEntries(request.headers.entries()); // Get request 
-
-  // URL of the other server to forward the request data
-  const serverUrl = 'https://4636e6bc9674f7.lhr.lifeak';
-
-  // Prepare options for the fetch request
-  const options = {
-    method: request.method,
-    headers: requestHeaders, // Forward the original request headers
-    body: requestBody // Forward the original request body
-  };
+  
+  
 
   // Make the call to another server
   try {
-    const response = await fetch(serverUrl, options);
-    const responseData = await response.text(); // Get the raw response 
-    console.log('Response from the server:', responseData);
+    const { request } = context;
+    const requestBody = await request.clone().text(); // Clone request to extract body
+    const requestHeaders = Object.fromEntries(request.headers.entries()); // Get request 
+
+	  // Print headers and body to logs
+	  console.log('Request Headers:', requestHeaders);
+	  console.log('Request Body:', requestBody);
   } catch (error) {
     console.error('Error making the request to the other server:', error);
   }
