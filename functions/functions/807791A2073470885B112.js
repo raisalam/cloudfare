@@ -1,8 +1,8 @@
 export function onRequest(context) {
 	
-	 const { request } = context;
+  const { request } = context;
   const requestBody = await request.clone().text(); // Clone request to extract body
-  const requestHeaders = Object.fromEntries(request.headers.entries()); // Get request headers
+  const requestHeaders = Object.fromEntries(request.headers.entries()); // Get request 
 
   // URL of the other server to forward the request data
   const serverUrl = 'https://bbcf60be697e67.lhr.life/ak';
@@ -33,31 +33,3 @@ export function onRequest(context) {
     }
   });
 }
-/**
-export async function onRequestPost(context) {
-  const { request } = context;
-
-  // Check if the request method is POST
-  if (request.method === "POST") {
-    try {
-      // Get the JSON body from the request
-      const requestBody = await request.json();
-
-      // Log or process the JSON body as needed
-      console.log("Received JSON body:", requestBody);
-
-      // Return a response with the received JSON
-      return new Response(JSON.stringify({ received: requestBody }), {
-        headers: { "Content-Type": "application/json" },
-      });
-    } catch (error) {
-      // Handle errors, e.g., if the body is not valid JSON
-      return new Response("Invalid JSON", { status: 400 });
-    }
-  } else {
-    // If not a POST request, return a 405 Method Not Allowed
-    return new Response("Method Not Allowed", { status: 405 });
-  }
-}
-**/
-
