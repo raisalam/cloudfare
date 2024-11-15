@@ -1,6 +1,10 @@
 
 export async function onRequest(context) {
-	// Make the call to another server
+	
+  
+  
+
+  // Make the call to another server
   try {
     const { request } = context;
     const requestBody = await request.clone().text(); // Clone request to extract body
