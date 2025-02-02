@@ -1,5 +1,4 @@
-export default {
-  async fetch(request) {
+export async function onRequest(context) {
     try {
       const requestData = await request.json();
       console.log("Request body:", requestData);
@@ -36,7 +35,6 @@ export default {
         headers: { "Content-Type": "application/json" },
       });
     }
-  },
 };
 
 // Decrypt the incoming request and parse JSON
