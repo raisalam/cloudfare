@@ -1,4 +1,4 @@
-export async function onRequest(context) {
+export async function onRequest(request) {
     try {
       const requestData = await request.json();
       console.log("Request body:", requestData);
