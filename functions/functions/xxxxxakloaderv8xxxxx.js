@@ -1,32 +1,129 @@
-export async function onRequest(context) {
+export default {
+  async fetch(request) {
+    try {
+      const requestData = await request.json();
+      console.log("Request body:", requestData);
+
+      // Sample encrypted JSON response
+      const jsonResponse = {
+        "data": "3686-MVBWaGt4Mm5qamVsTTU1YmN1YWVUcWhKWVVZTC95eE51aWMzaURxTHhVMUNjQ2YvZ3dkemoyQ3V5S2o5eUpLZGFmdDFhS3pJVmxjdUFuV01wOHU3SlBvTHVGMUNXRUNBRTRkUlNyclhWKzg9",
+        "message": "0",
+        "status": "200",
+        "key": "2c98d4aad0fdc0ca06ce0de2455ceca4",
+        "expiryTime": "Thu Feb 06 2025 17:51:12 GMT+0000 (Coordinated Universal Time)",
+        "lc_type": "3",
+        "lc_white": "pool.ntp.org/cm.sereng.miniclippt.comret/live-config.pool.miniclippt/mobile-live.pool.miniclippt/facebook",
+        "up_vcode": "3582",
+        "up_vname": "55.9.0",
+        "cvdelta": "7200"
+      };
+
+      // Decrypt the request
+      const decryptedData = await decryptRequest(requestData);
+      const androidId = await getMd5(decryptedData.c);
+      console.log("Android ID:", androidId);
+
+      // Encrypt and return response
+      const encryptedResponse = await encryptResponse(androidId, jsonResponse);
+      console.log("Encrypted response:", encryptedResponse);
+
+      return new Response(JSON.stringify(encryptedResponse), {
+        headers: { "Content-Type": "application/json" },
+      });
+    } catch (error) {
+      console.error("Error processing request:", error);
+      return new Response(JSON.stringify({ status: "failure", message: error.message }), {
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+  },
+};
+
+// Decrypt the incoming request and parse JSON
+async function decryptRequest(request) {
   try {
-    // Make the call to another server
-    const { request } = context;
-    const requestBody = await request.clone().text(); // Clone request to extract body
-    const requestHeaders = Object.fromEntries(request.headers.entries()); // Get request headers
+    let jsonObject = typeof request === "string" ? JSON.parse(request) : request;
+    let hashMap = {};
 
-    // Print headers and body to logs
-    console.log('Request Headers:', requestHeaders);
-    console.log('Request Body:', requestBody);
+    for (let key of Object.keys(jsonObject)) {
+      let value = jsonObject[key];
+      if (key === "a" || key === "b" || key === "c") {
+        hashMap[key] = await decrypt(value);
+      } else if (key === "e" || key === "f" || key === "g" || key === "h") {
+        hashMap[key] = await decrypt(value);
+      } else {
+        hashMap[key] = value;
+      }
+    }
+    return hashMap;
+  } catch (e) {
+    console.error("Error in decryptRequest:", e);
+    return {};
+  }
+}
 
-    // JSON response as string
-    const jsonResponseString = '{"result":{"\u0007\u0003\u0015X":"3686-Yi9tN3dnU0FyeThqSzlSaXhjMy8rSExmdjlNM0lDcmJZc3JSK1JCQWJha3B5Z1V3RlJzYXN5QkYrOWh1U3pPejU3KzVWdDRTSU0wZFNTQmJncU1nOWlNdTk2QzhLcTE1bXg5eTI5NlMzMUU9","\u000e\u0007\u0012JPWS":"S","\u0010\u0016\u0000MDC":"QRQ","\b\u0007\u0018":"Q\u0001X\u0001U\u0004WTWUV\\V\u0004W\u0005\u0007U\u0001\\\u0003\u0007\u0006Q\u0001\u0003\u0003U\u0007QVP","\u0006\u001a\u0011PCIb\\^\u0000":"7\n\u0014\u0019wUT\u0015\u0003S\u0010\n\u0005\u0006\u0001D\u0006TX\f\u0002YRQ\u0015q{bI\u0002\u0007TSBIz^_DQZ\u000bQLPP\u00141Y\n\u0014\\A\u0010\u0002\u000f\u0015b_[\u0007\u001b","\u000f\u0001>MH@S":"P","\u000f\u0001>NYYBP":"\u0013\r\u000eU\u001f^BE\u001d\nB_\u001aWYJD\u0006\u0010\\]\u0004M\u000e\\X_U\u000e[G\u0014\u0017L\u0002V\\BSA\u001c\tYNP\u0019W\u000bY\u0005\u000b^\u001d\u0013\f\fY\u0018[_\f[T\b\n\u0012\u0011M\u001e]YWZ\tU\u0015Y]B\u0001\u0019\u0013\rV_M\u000e\n[_UZ\u000bBG\u0010L\u0004\u0000ZTRYZX","\u0016\u0012>OR_RP":"PWY\u000b","\u0016\u0012>O_Q[P":"VWO\u0000\u001f\u0000","\u0000\u0014\u0005\\]DW":"TPQ\t"}}';
+// XOR decryption method
+async function decrypt(str) {
+  const REQUEST_KEY = "t8V0x5z6c7f2j4a8s7d6h3k1m9p0q2r5";
+  let sb = "";
+  for (let i = 0; i < str.length; i++) {
+    let charAt = str.charCodeAt(i);
+    sb += String.fromCharCode(charAt ^ REQUEST_KEY.charCodeAt(i % REQUEST_KEY.length));
+  }
+  return sb;
+}
 
-    // Return the string directly (no JSON.stringify)
-    return new Response(jsonResponseString, {
-      status: 200,
-      headers: {
-        "Content-Type": "application/json"
+// Encrypt response object using XOR encryption
+async function encryptResponse(androidId, response) {
+  return await encryptResponse1(androidId, response);
+}
+
+async function encryptResponse1(encKey, response) {
+  try {
+    let hashMap = {};
+    Object.keys(response).forEach((key) => {
+      const encryptedKey = encryptResponseInternal(key, encKey);
+      let value = response[key];
+
+      if (key === "data") {
+        console.log("inside data");
+        console.log(value);
+        hashMap[encryptedKey] = value;
+      } else {
+        hashMap[encryptedKey] = encryptResponseInternal(value, encKey);
       }
     });
-  } catch (error) {
-    console.error('Error making the request to the other server:', error);
-    return new Response(
-      JSON.stringify({ status: "failure", message: error.message }),
-      {
-        status: 500,
-        headers: { "Content-Type": "application/json" }
-      }
-    );
+
+    console.log("Encrypted JSON:", JSON.stringify(hashMap));
+    return hashMap;
+  } catch (e) {
+    console.error(e);
+    return { error: e.toString() };
   }
+}
+
+// XOR encryption for key-value pairs
+function encryptResponseInternal(input, key) {
+  if (typeof input !== "string") {
+    console.error("encryptResponseInternal Error: 'input' is not a string:", input);
+    input = String(input);
+  }
+  if (typeof key !== "string" || key.length === 0) {
+    console.error("encryptResponseInternal Error: 'key' is invalid:", key);
+    throw new Error("Encryption key is invalid or missing.");
+  }
+
+  let output = "";
+  for (let i = 0; i < input.length; ++i) {
+    output += String.fromCharCode(input.charCodeAt(i) ^ key.charCodeAt(i % key.length));
+  }
+  return output;
+}
+
+// Web Crypto API for MD5 Hashing in Cloudflare Workers
+async function getMd5(str) {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(str);
+  const hashBuffer = await crypto.subtle.digest("MD5", data);
+  return [...new Uint8Array(hashBuffer)].map((b) => b.toString(16).padStart(2, "0")).join("");
 }
