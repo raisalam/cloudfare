@@ -1,7 +1,7 @@
 export async function onRequest(context) {
     try {
          const { request } = context;
-      const requestData = await request.json();
+      const requestData = await request.clone().text();
       console.log("Request body:", requestData);
 
       // Sample encrypted JSON response
