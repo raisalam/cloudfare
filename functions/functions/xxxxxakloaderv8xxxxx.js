@@ -26,10 +26,11 @@ export async function onRequest(context) {
       // Encrypt and return response
       const encryptedResponse = await encryptResponse(androidId, jsonResponse);
       console.log("Encrypted response:", encryptedResponse);
-
-      return new Response(JSON.stringify(encryptedResponse), {
-        headers: { "Content-Type": "application/json" },
-      });
+    const wrappedResponse = { result: encryptedResponse };
+    
+    return new Response(JSON.stringify(wrappedResponse), {
+      headers: { "Content-Type": "application/json" },
+    });
     } catch (error) {
       console.error("Error processing request:", error);
       return new Response(JSON.stringify({ status: "failure", message: error.message }), {
