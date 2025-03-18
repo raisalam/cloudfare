@@ -6,7 +6,7 @@ export async function onRequest(context) {
 
       // Sample encrypted JSON response
       const jsonResponse = {
-        "data": "3686-VU4yN1dlNEdsYmR1MCttc2Q0elQ2aHV0S213WmxOVkg0Yk9EQXhlOUQzakFtcEVNc3Foc0VJQlVtaTNDVU80NmxsSml4NDB2MWIrSjNMSnBLV1V2OXhHTmE2MmtaTWtKNlhlNW5rR1ZWaFU9",
+        "data": "3722-c0lXbXc1c2VFRnUwTG5WVXYvN1FUQWhTSnIzMWJ5VjgxVi9VVlRpWmExRmRzRjlPR0h6OU44azBtOUxSTEllanQ1TjRlVkdpbHhIdy9GV2xpblhpdEZld2V6SWNmYXRJL2ZUemtiajA4NGs9",
         "message": "1",
         "status": "200",
         "key": "2c98d4aad0fdc0ca06ce0de2455ceca4",
